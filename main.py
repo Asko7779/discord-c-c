@@ -3,6 +3,8 @@
 # do not use for malicious purposes
 ########################################
 
+# more features may be added later
+
 import time
 import requests
 import pyautogui

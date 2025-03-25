@@ -5,6 +5,7 @@
 
 # more features may be added later
 
+
 import time
 import requests
 import pyautogui
@@ -27,9 +28,10 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 async def on_ready():
     print(f"Logged in as {bot.user}")
 
-@bot.command()
-async def test(ctx):
-    await ctx.send("ok")
+#@bot.command()
+#async def test(ctx):
+#    await ctx.send("ok")
+
 
 @bot.command()
 async def options(ctx):

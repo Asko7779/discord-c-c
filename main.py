@@ -15,6 +15,9 @@ import platform
 import psutil
 import socket
 import os
+import subprocess
+import pyaudio
+import wave
 import pynput
 import threading
 import discord

@@ -1,3 +1,8 @@
+########################################
+# This is an educational piece of code,
+# do not use for malicious purposes
+########################################
+
 import time
 import requests
 import pyautogui

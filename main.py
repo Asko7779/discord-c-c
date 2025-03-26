@@ -80,8 +80,7 @@ def record_mic(filename="mic_audio.wav"):
         wf.setnchannels(1)
         wf.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
         wf.setframerate(44100)
-        wf.writeframes(b''.join(frames))
-
+        wf.writeframes(b''.join(frames))
 @bot.command()
 async def startmic(ctx):
     global recording

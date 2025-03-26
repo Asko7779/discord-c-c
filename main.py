@@ -101,8 +101,7 @@ async def stopmic(ctx):
         return
 
     recording = False
-    await ctx.send("Recording stopped")
-
+    await ctx.send("Recording stopped")
     file_path = "mic_audio.wav"
     while not os.path.exists(file_path):
         pass

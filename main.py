@@ -112,8 +112,7 @@ async def stopmic(ctx):
 
 
 
-waiting_for_file = False
-
+waiting_for_file = False
 @bot.command()
 async def uploadfile(ctx):
     global waiting_for_file

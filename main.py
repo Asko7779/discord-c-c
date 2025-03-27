@@ -182,6 +182,7 @@ async def cmd(ctx, *, command: str):
     except subprocess.CalledProcessError as e:
         await ctx.send(f"```\n{e.output}\n```")
 
+
 @bot.command()
 async def openweb(ctx, url: str):
     try:

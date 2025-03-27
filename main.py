@@ -1,10 +1,12 @@
 
+
 ########################################
 # This is an educational piece of code,
 # do not use for malicious purposes
 ########################################
 
 # more features may be added later
+
 
 import webbrowser
 import time
@@ -22,7 +24,6 @@ import pynput
 import threading
 import discord
 from discord.ext import commands
-
 
 TOKEN = "your bot token"
 intents = discord.Intents.default()

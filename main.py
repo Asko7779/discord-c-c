@@ -89,6 +89,8 @@ async def startmic(ctx):
 
     await ctx.send("Recording...")
 
+
+
     thread = threading.Thread(target=record_mic)
     thread.start()
 

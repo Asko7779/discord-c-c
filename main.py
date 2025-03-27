@@ -1,5 +1,4 @@
 
-
 ########################################
 # This is an educational piece of code,
 # do not use for malicious purposes
@@ -39,7 +38,6 @@ async def on_ready():
 #@bot.command()
 #async def test(ctx):
 #    await ctx.send("ok")
-
 
 
 @bot.command()

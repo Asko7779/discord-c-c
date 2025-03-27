@@ -117,8 +117,7 @@ waiting_for_file = False
 async def uploadfile(ctx):
     global waiting_for_file
     waiting_for_file = True
-    await ctx.send("Upload file:")
-
+    await ctx.send("Upload file:")
 @bot.event
 async def on_message(message):
     global waiting_for_file

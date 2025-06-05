@@ -1,1 +1,7 @@
-
+discord.py
+requests
+pynput
+pyautogui
+opencv-python
+psutil
+pyaudio
